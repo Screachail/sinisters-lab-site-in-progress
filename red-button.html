@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>THE RED BUTTON - Sinister's Lab</title>
+    <style>
+        body {
+            background-color: #1a1a2e;
+            color: #eee;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .logo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        h1 {
+            color: #ff4444;
+            text-shadow: 0 0 10px #ff0000;
+            margin-top: 60px;
+        }
+
+        .warning {
+            color: #ffcc00;
+            font-size: 1.2em;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0.5; }
+        }
+
+        .button-container {
+            margin: 50px auto;
+            position: relative;
+        }
+
+        .red-button {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #ff6666, #cc0000, #880000);
+            border: 8px solid #444;
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.5), inset 0 -5px 20px rgba(0,0,0,0.3);
+            cursor: pointer;
+            font-size: 24px;
+            color: white;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px #000;
+            transition: all 0.1s;
+        }
+
+        .red-button:hover {
+            box-shadow: 0 10px 50px rgba(255, 0, 0, 0.8), inset 0 -5px 20px rgba(0,0,0,0.3);
+            transform: scale(1.05);
+        }
+
+        .red-button:active {
+            transform: scale(0.95) translateY(5px);
+            box-shadow: 0 5px 20px rgba(255, 0, 0, 0.5), inset 0 5px 20px rgba(0,0,0,0.5);
+        }
+
+        #result {
+            margin-top: 40px;
+            font-size: 1.5em;
+            min-height: 100px;
+        }
+
+        .consequence {
+            color: #ff6666;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .back-link {
+            margin-top: 40px;
+        }
+
+        .back-link a {
+            color: #66ccff;
+            text-decoration: none;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+        .click-counter {
+            margin-top: 20px;
+            color: #888;
+        }
+
+        #glitch-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ff0000;
+            opacity: 0.3;
+            pointer-events: none;
+            animation: glitch 0.1s;
+        }
+
+        @keyframes glitch {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">
+        <img src="eye.jpg" width="100" height="100" alt="Sinister's Lab logo">
+    </div>
+
+    <h1>THE RED BUTTON</h1>
+
+    <p class="warning">WARNING: You were explicitly told NOT to click this!</p>
+
+    <div class="button-container">
+        <button class="red-button" onclick="pressButton()">
+            PRESS ME
+        </button>
+    </div>
+
+    <div id="result"></div>
+
+    <div class="click-counter">
+        Times pressed: <span id="counter">0</span>
+    </div>
+
+    <div class="back-link">
+        <a href="index.html">Return to safety</a>
+    </div>
+
+    <div id="glitch-overlay"></div>
+
+    <script>
+        let clickCount = 0;
+
+        const consequences = [
+            "You released a swarm of digital bees into the blockchain!",
+            "Somewhere, a whale just sold all their Bitcoin because of you.",
+            "The lab's experiment #47 has escaped. Run.",
+            "You just mass-minted 10,000 ugly NFTs. Congratulations.",
+            "A Chilled Kong is now slightly less chilled.",
+            "You've activated the Osmosis... wait, that's actually good!",
+            "The Ape Society has revoked your membership application.",
+            "Your portfolio just became a 'learning experience'.",
+            "A Boss Cat is judging you right now.",
+            "You've unlocked: REGRET",
+            "Lab Protocol violated. Dr. Sinister has been notified.",
+            "Plot twist: The button was actually green. You're colorblind now.",
+            "Congratulations! You won... absolutely nothing.",
+            "The Goat Tribe elders are disappointed in you.",
+            "Error 404: Your impulse control not found.",
+            "Achievement Unlocked: Professional Button Presser",
+            "You just mass-liquidated someone's position. Oops.",
+            "The eye in the logo blinked. Did you see it?",
+            "Your curiosity has been noted in the permanent record.",
+            "Breaking: Local scientist ruins everything (again)"
+        ];
+
+        const extremeConsequences = [
+            "YOU PRESSED IT TOO MANY TIMES! The lab is collapsing! ...just kidding. Or am I?",
+            "At this point, you're basically a lab assistant. Welcome to the team!",
+            "Fun fact: This button does nothing. But I appreciate your dedication.",
+            "You've reached the secret message: Stay curious, fellow scientist!",
+            "MAXIMUM CHAOS ACHIEVED. The experiment is complete. Thank you for your participation."
+        ];
+
+        function pressButton() {
+            clickCount++;
+            document.getElementById('counter').textContent = clickCount;
+
+            // Flash effect
+            const overlay = document.getElementById('glitch-overlay');
+            overlay.style.display = 'block';
+            setTimeout(() => overlay.style.display = 'none', 100);
+
+            let message;
+            if (clickCount > 20 && clickCount % 10 === 0) {
+                message = extremeConsequences[Math.floor(Math.random() * extremeConsequences.length)];
+            } else {
+                message = consequences[Math.floor(Math.random() * consequences.length)];
+            }
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `<p class="consequence">${message}</p>`;
+
+            // Extra chaos after many clicks
+            if (clickCount === 50) {
+                document.body.style.transform = 'rotate(1deg)';
+            }
+            if (clickCount === 100) {
+                document.body.style.transform = 'rotate(-1deg)';
+                alert('Okay, you win. You are the ultimate button presser. The lab recognizes your persistence!');
+            }
+        }
+    </script>
+</body>
+</html>
